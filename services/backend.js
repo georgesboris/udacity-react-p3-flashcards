@@ -34,7 +34,7 @@ export async function initialFetchDecks() {
   await createCard(
     deckReact.id,
     "Will React be around for a while?",
-    "It seems that it will! And even if it doesn't it's paradigm you will for sure."
+    "It seems that it will! And even if it doesn't it's paradigm will for sure."
   )
 
   return fetchDecks()
@@ -60,7 +60,7 @@ export function createDeck(title) {
   const deck = {
     id: uuid.v4(),
     title,
-    cards: [],
+    cards: {},
     order: Date.now()
   }
 
