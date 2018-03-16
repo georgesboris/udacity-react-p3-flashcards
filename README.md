@@ -5,3 +5,5 @@ To get it started just:
 ```
 yarn && yarn start
 ```
+
+Tested on iOS simulator.

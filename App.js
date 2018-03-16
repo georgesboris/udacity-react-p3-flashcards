@@ -45,7 +45,7 @@ const Stack = StackNavigator(
     [routeNames.ROUTE_DECK_OVERVIEW]: {
       screen: DeckOverview,
       navigationOptions: {
-        title: "Deck overview"
+        title: "Deck"
       }
     },
     [routeNames.ROUTE_DECK_QUIZ]: {
@@ -57,7 +57,7 @@ const Stack = StackNavigator(
     [routeNames.ROUTE_DECK_DASHBOARD]: {
       screen: DeckDashboard,
       navigationOptions: {
-        title: "Deck details"
+        title: "Cards"
       }
     },
     [routeNames.ROUTE_DECK_CARD_CREATE]: {
@@ -74,7 +74,10 @@ const Stack = StackNavigator(
     }
   },
   {
-    initialRouteName: routeNames.ROUTE_DASHBOARD
+    initialRouteName: routeNames.ROUTE_DASHBOARD,
+    navigationOptions: {
+      headerBackTitle: null
+    }
   }
 )
 

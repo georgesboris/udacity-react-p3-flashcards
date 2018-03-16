@@ -1,29 +1,58 @@
 // react
-import React from 'react'
-import { View, Text, Button } from 'react-native'
+import React, { Component } from "react"
+import { View } from "react-native"
+import { Content, List, ListItem, Text, Button } from "native-base"
+import Deck from "../../components/Deck/Deck"
+import ButtonAdd from "../../components/ButtonAdd/ButtonAdd"
 // constants
-import * as routeNames from '../../constants/routeNames'
+import {
+  ROUTE_DECK_DASHBOARD,
+  ROUTE_DECK_QUIZ
+} from "../../constants/routeNames"
 
-const DeckOverview = ({ navigation }) => {
-  const { deck } = navigation.state.params
-  return (
-    <View>
-      <Text>{deck.title}</Text>
-      <Text>{deck.cards.length} cards</Text>
-      <Button
-        title="start quiz"
-        onPress={() =>
-          navigation.navigate(routeNames.ROUTE_DECK_QUIZ, { deck })
-        }
-      />
-      <Button
-        title="edit deck"
-        onPress={() =>
-          navigation.navigate(routeNames.ROUTE_DECK_DASHBOARD, { deck })
-        }
-      />
-    </View>
-  )
+class DeckOverview extends Component {
+  render() {
+    const { navigation } = this.props
+    const { deck } = navigation.state.params
+    const cards = Object.entries(deck.cards)
+    return (
+      <Content>
+        <View style={{ padding: 15 }}>
+          <Deck {...deck} />
+
+          <View
+            style={{
+              paddingLeft: 2,
+              paddingRight: 2,
+              paddingTop: 15,
+              paddingBottom: 35
+            }}
+          >
+            <Button
+              full
+              dark
+              onPress={() =>
+                navigation.navigate(ROUTE_DECK_DASHBOARD, { deck })
+              }
+            >
+              <Text>Manage cards</Text>
+            </Button>
+
+            <View style={{ height: 15 }} />
+
+            <Button
+              full
+              primary
+              disabled={cards.length === 0}
+              onPress={() => navigation.navigate(ROUTE_DECK_QUIZ, { deck })}
+            >
+              <Text>Start quiz</Text>
+            </Button>
+          </View>
+        </View>
+      </Content>
+    )
+  }
 }
 
 export default DeckOverview
