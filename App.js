@@ -94,15 +94,20 @@ export default class App extends React.Component {
     this.setState({ decks })
   }
 
-  _triggerAction = action => {
-    action
-      .then(() => backend.fetchDecks())
-      .then(decks => this.setState({ decks }))
-  }
+  _triggerAction = action =>
+    action.then(result => Promise.all([result, backend.fetchDecks()])).then(
+      ([deck, decks]) =>
+        new Promise(resolve => {
+          this.setState({ decks }, () => {
+            resolve(deck)
+          })
+        })
+    )
 
-  onCreateNewDeck = title => _triggerAction(backend.createDeck(title))
-  onUpdateDeck = (id, title) => _triggerAction(backend.updateDeck(id, title))
-  onRemoveDeck = id => _triggerAction(backend.removeDeck(id))
+  onCreateNewDeck = title => this._triggerAction(backend.createDeck(title))
+  onUpdateDeck = (id, title) =>
+    this._triggerAction(backend.updateDeck(id, title))
+  onRemoveDeck = id => this._triggerAction(backend.removeDeck(id))
 
   onCreateNewCard = (deckId, question, answer) =>
     _triggerAction(backend.createCard(deckId, question, answer))
