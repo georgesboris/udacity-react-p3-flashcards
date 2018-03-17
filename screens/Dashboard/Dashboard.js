@@ -1,6 +1,6 @@
 // react
 import React, { Component } from "react"
-import { View } from "react-native"
+import { ListView, View } from "react-native"
 import {
   Content,
   Grid,
@@ -8,6 +8,7 @@ import {
   Card,
   CardItem,
   Body,
+  Button,
   Icon,
   List,
   ListItem
@@ -27,36 +28,56 @@ class Dashboard extends Component {
     )
   })
 
+  dataSource = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
+  onRemoveDeck = deckId => {
+    this.props.screenProps.onRemoveDeck(deckId)
+  }
+
   render() {
     const { navigation, screenProps } = this.props
-    const { decks } = screenProps
+    const decks = Object.entries(screenProps.decks).sort(
+      (a, b) => b[1].order - a[1].order
+    )
+
     return (
       <Content>
         {Object.keys(decks).length > 0 ? (
-          <Grid>
-            <List
-              dataArray={Object.entries(decks)}
-              renderRow={([deckId, deck]) => (
-                <ListItem
-                  button
-                  onPress={() =>
-                    navigation.navigate(ROUTE_DECK_OVERVIEW, { deckId })
+          <List
+            dataSource={this.dataSource.cloneWithRows(decks)}
+            renderRow={([deckId, deck]) => (
+              <ListItem
+                button
+                onPress={() =>
+                  navigation.navigate(ROUTE_DECK_OVERVIEW, { deckId })
+                }
+              >
+                <Deck
+                  {...deck}
+                  rightComponent={
+                    <Icon
+                      ios="ios-arrow-forward"
+                      android="md-arrow-forward"
+                      style={{ color: "#DDD", width: "auto" }}
+                    />
                   }
-                >
-                  <Deck
-                    {...deck}
-                    rightComponent={
-                      <Icon
-                        ios="ios-arrow-forward"
-                        android="md-arrow-forward"
-                        style={{ color: "#DDD", width: "auto" }}
-                      />
-                    }
-                  />
-                </ListItem>
-              )}
-            />
-          </Grid>
+                />
+              </ListItem>
+            )}
+            rightOpenValue={-45}
+            renderRightHiddenRow={([deckId, _], secId, rowId, rowMap) => (
+              <Button
+                full
+                danger
+                onPress={() => {
+                  rowMap[`${secId}${rowId}`].props.closeRow()
+                  this.onRemoveDeck(deckId)
+                }}
+              >
+                <Icon active name="trash" />
+              </Button>
+            )}
+          />
         ) : (
           <View style={{ padding: 16 }}>
             <Card style={{ padding: 20 }}>

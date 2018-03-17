@@ -52,7 +52,7 @@ class DeckQuiz extends Component {
     const { deckId } = navigation.state.params
 
     const deck = decks[deckId]
-    const cards = Object.entries(deck.cards)
+    const cards = Object.entries(deck.cards).sort((a, b) => a.order - b.order)
 
     const count = cards.length
 

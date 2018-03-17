@@ -2,7 +2,7 @@ import { AsyncStorage } from "react-native"
 import uuid from "uuid"
 import omit from "ramda/es/omit"
 
-const DECKS_KEY = "@Flashcards:Decks"
+const DECKS_KEY = "Flashcards:Decks"
 
 /**
  * This method is supposed to be run sequencially so to simulate actual
@@ -77,7 +77,7 @@ export function updateDeck(deckId, title) {
     const decks = JSON.parse(data)
 
     return AsyncStorage.mergeItem(
-      DECKS_ITEM,
+      DECKS_KEY,
       JSON.stringify({
         ...decks,
         [deckId]: {
@@ -92,7 +92,10 @@ export function updateDeck(deckId, title) {
 export function removeDeck(deckId) {
   return AsyncStorage.getItem(DECKS_KEY).then(data => {
     const decks = JSON.parse(data)
-    return AsyncStorage.setItem(DECKS_ITEM, JSON.stringify(omit(decks, deckId)))
+    return AsyncStorage.setItem(
+      DECKS_KEY,
+      JSON.stringify(omit([deckId], decks))
+    )
   })
 }
 
@@ -138,7 +141,7 @@ export function updateCard(deckId, cardId, question, answer) {
     const deck = decks[deckId]
 
     return AsyncStorage.mergeItem(
-      DECKS_ITEM,
+      DECKS_KEY,
       JSON.stringify({
         [deckId]: {
           ...deck,
@@ -162,11 +165,11 @@ export function removeCard(deckId, cardId) {
     const deck = decks[deckId]
 
     return AsyncStorage.mergeItem(
-      DECKS_ITEM,
+      DECKS_KEY,
       JSON.stringify({
         [deckId]: {
           ...deck,
-          cards: omit(deck.cards, cardId)
+          cards: omit([cardId], deck.cards)
         }
       })
     )
