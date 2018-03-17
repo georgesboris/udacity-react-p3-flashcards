@@ -19,7 +19,7 @@ class DeckCreate extends Component {
     const { navigation, screenProps } = this.props
     const { onCreateNewDeck } = screenProps
     onCreateNewDeck(this.state.title).then(deck =>
-      navigation.replace(ROUTE_DECK_OVERVIEW, { deck })
+      navigation.replace(ROUTE_DECK_OVERVIEW, { deckId: deck.id })
     )
   }
 

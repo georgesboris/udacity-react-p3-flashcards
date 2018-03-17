@@ -12,8 +12,10 @@ import {
 
 class DeckOverview extends Component {
   render() {
-    const { navigation } = this.props
-    const { deck } = navigation.state.params
+    const { navigation, screenProps } = this.props
+    const { decks } = screenProps
+    const { deckId } = navigation.state.params
+    const deck = decks[deckId]
     const cards = Object.entries(deck.cards)
     return (
       <Content>
@@ -32,7 +34,7 @@ class DeckOverview extends Component {
               full
               dark
               onPress={() =>
-                navigation.navigate(ROUTE_DECK_DASHBOARD, { deck })
+                navigation.navigate(ROUTE_DECK_DASHBOARD, { deckId })
               }
             >
               <Text>Manage cards</Text>
@@ -44,7 +46,7 @@ class DeckOverview extends Component {
               full
               primary
               disabled={cards.length === 0}
-              onPress={() => navigation.navigate(ROUTE_DECK_QUIZ, { deck })}
+              onPress={() => navigation.navigate(ROUTE_DECK_QUIZ, { deckId })}
             >
               <Text>Start quiz</Text>
             </Button>

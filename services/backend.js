@@ -2,7 +2,7 @@ import { AsyncStorage } from "react-native"
 import uuid from "uuid"
 import omit from "ramda/es/omit"
 
-const DECKS_KEY = "@Flashcards/Decks"
+const DECKS_KEY = "@Flashcards:Decks"
 
 /**
  * This method is supposed to be run sequencially so to simulate actual
@@ -110,6 +110,10 @@ export function createCard(deckId, question, answer) {
 
   return AsyncStorage.getItem(DECKS_KEY)
     .then(data => {
+      if (!data) {
+        return
+      }
+
       const decks = JSON.parse(data)
       const deck = decks[deckId]
       return AsyncStorage.mergeItem(

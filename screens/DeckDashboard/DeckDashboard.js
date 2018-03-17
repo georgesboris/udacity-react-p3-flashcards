@@ -11,13 +11,33 @@ import {
 class DeckDashboard extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerRight: (
-      <ButtonAdd onPress={() => navigation.navigate(ROUTE_DECK_CARD_CREATE)} />
+      <ButtonAdd
+        onPress={() =>
+          navigation.navigate(ROUTE_DECK_CARD_CREATE, {
+            deckId: navigation.state.params.deckId
+          })
+        }
+      />
     )
   })
 
+  componentDidMount() {
+    const { navigation, screenProps } = this.props
+    const { decks } = screenProps
+    const { deckId } = navigation.state.params
+    const cards = decks[deckId].cards
+    if (!Object.entries(cards).length) {
+      navigation.navigate(ROUTE_DECK_CARD_CREATE, {
+        deckId: navigation.state.params.deckId
+      })
+    }
+  }
+
   render() {
-    const { navigation } = this.props
-    const { deck } = navigation.state.params
+    const { navigation, screenProps } = this.props
+    const { decks } = screenProps
+    const { deckId } = navigation.state.params
+    const deck = decks[deckId]
     return (
       <View>
         {Object.entries(deck.cards).map(([cardId, card]) => (
@@ -25,7 +45,7 @@ class DeckDashboard extends Component {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate(ROUTE_DECK_CARD_EDIT, {
-                  deck,
+                  deckId,
                   card
                 })
               }

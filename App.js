@@ -110,13 +110,13 @@ export default class App extends React.Component {
   onRemoveDeck = id => this._triggerAction(backend.removeDeck(id))
 
   onCreateNewCard = (deckId, question, answer) =>
-    _triggerAction(backend.createCard(deckId, question, answer))
+    this._triggerAction(backend.createCard(deckId, question, answer))
 
   onUpdateCard = (deckId, cardId, question, answer) =>
-    _triggerAction(backend.updateCard(deckId, cardId, question, answer))
+    this._triggerAction(backend.updateCard(deckId, cardId, question, answer))
 
   onRemoveCard = (deckId, cardId) =>
-    _triggerAction(backend.removeCard(deckId, cardId))
+    this._triggerAction(backend.removeCard(deckId, cardId))
 
   render() {
     return (

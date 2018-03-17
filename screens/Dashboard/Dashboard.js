@@ -35,14 +35,12 @@ class Dashboard extends Component {
         {Object.keys(decks).length > 0 ? (
           <Grid>
             <List
-              dataArray={decks}
-              renderRow={deck => (
+              dataArray={Object.entries(decks)}
+              renderRow={([deckId, deck]) => (
                 <ListItem
                   button
                   onPress={() =>
-                    navigation.navigate(ROUTE_DECK_OVERVIEW, {
-                      deck
-                    })
+                    navigation.navigate(ROUTE_DECK_OVERVIEW, { deckId })
                   }
                 >
                   <Deck
