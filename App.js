@@ -11,6 +11,7 @@ import DeckDashboard from "./screens/DeckDashboard/DeckDashboard"
 import DeckCardCreate from "./screens/DeckCardCreate/DeckCardCreate"
 import DeckCardEdit from "./screens/DeckCardEdit/DeckCardEdit"
 import * as backend from "./services/backend"
+import { setLocalNotifications } from "./services/notifications"
 
 import { View } from "react-native"
 import { Container, Text } from "native-base"
@@ -92,6 +93,8 @@ export default class App extends React.Component {
 
     const decks = await backend.initialFetchDecks()
     this.setState({ decks })
+
+    await setLocalNotifications()
   }
 
   _triggerAction = action =>

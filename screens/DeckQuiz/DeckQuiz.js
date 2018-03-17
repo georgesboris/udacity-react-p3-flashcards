@@ -3,6 +3,11 @@ import React, { Component } from "react"
 import { View, Text } from "react-native"
 import DeckQuizCard from "./DeckQuizCard"
 import DeckQuizFinish from "./DeckQuizFinish"
+// etc
+import {
+  setLocalNotifications,
+  clearLocalNotifications
+} from "../../services/notifications"
 
 const initialState = {
   index: 0,
@@ -25,11 +30,17 @@ class DeckQuiz extends Component {
     }))
   }
 
+  onFinishQuiz = () => {
+    clearLocalNotifications().then(setLocalNotifications)
+  }
+
   onRestartQuiz = () => {
+    this.onFinishQuiz()
     this.setState(initialState)
   }
 
   onBackToDeck = () => {
+    this.onFinishQuiz()
     this.props.navigation.goBack()
   }
 
